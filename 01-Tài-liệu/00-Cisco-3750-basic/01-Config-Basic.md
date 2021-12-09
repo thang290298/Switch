@@ -157,3 +157,56 @@ Sw-Thangnv-lab(config)#exit
 
 <h3 align="center"><img src="../../02-Images/2.png"></h3>
 
+## 3. Cấu hình bandwidth
+- Giới hạn Bandwidth trên Switch giúp để người quản trị mạng LAN có thể kiểm soát được băng thông kết nối từ bên trong ra bên ngoài internet trong hệ thống mạng LAN.
+### 3.1 Kích hoạt tính năng QoS
+
+```sh
+Sw-Thangnv-lab#configure terminal
+Enter configuration commands, one per line.  End with CNTL/Z.
+Sw-Thangnv-lab(config)#mls qos
+Sw-Thangnv-lab(config)#
+```
+### 3.2 ip access-list extended 
+
+```sh
+Sw-Thangnv-lab#configure terminal
+Enter configuration commands, one per line.  End with CNTL/Z.
+Sw-Thangnv-lab(config)#ip access-list extended limit_200M
+Sw-Thangnv-lab(config-ext-nacl)#permit ip any any
+Sw-Thangnv-lab(config-ext-nacl)#exit
+Sw-Thangnv-lab(config)#
+```
+
+### 3.3 Tạo class map để phân loại các traffic
+
+```sh
+Sw-Thangnv-lab#configure terminal
+Enter configuration commands, one per line.  End with CNTL/Z.
+Sw-Thangnv-lab(config)#class-map match-all limited_200M
+Sw-Thangnv-lab(config-cmap)#match access-group name limit_200M
+Sw-Thangnv-lab(config-cmap)#exit
+Sw-Thangnv-lab(config)#
+```
+
+### 3.4 Tạo Policy
+
+```sh
+Sw-Thangnv-lab#configure terminal
+Enter configuration commands, one per line.  End with CNTL/Z.
+Sw-Thangnv-lab(config)#policy-map POLICY_200M
+Sw-Thangnv-lab(config-pmap)#class limited_200M
+```
+
+### 3.5 Gán Policy cho cổng mạng muốn hạn chế tốc độ
+
+```sh
+Sw-Thangnv-lab#configure terminal
+Enter configuration commands, one per line.  End with CNTL/Z.
+Sw-Thangnv-lab(config)#interface GigabitEthernet4/0/10
+Sw-Thangnv-lab(config-if)#service-policy input POLICY_200M
+Sw-Thangnv-lab(config-if)#exit
+Sw-Thangnv-lab(config)#
+
+```
+
