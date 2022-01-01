@@ -172,7 +172,7 @@ Sw-Thangnv-lab(config)#
 ```sh
 Sw-Thangnv-lab#configure terminal
 Enter configuration commands, one per line.  End with CNTL/Z.
-Sw-Thangnv-lab(config)#ip access-list extended limit_200M
+Sw-Thangnv-lab(config)#ip access-list extended limit_100MBps
 Sw-Thangnv-lab(config-ext-nacl)#permit ip any any
 Sw-Thangnv-lab(config-ext-nacl)#exit
 Sw-Thangnv-lab(config)#
@@ -183,8 +183,8 @@ Sw-Thangnv-lab(config)#
 ```sh
 Sw-Thangnv-lab#configure terminal
 Enter configuration commands, one per line.  End with CNTL/Z.
-Sw-Thangnv-lab(config)#class-map match-all limited_200M
-Sw-Thangnv-lab(config-cmap)#match access-group name limit_200M
+Sw-Thangnv-lab(config)#class-map match-all limit_100MBps
+Sw-Thangnv-lab(config-cmap)#match access-group name limit_100MBps
 Sw-Thangnv-lab(config-cmap)#exit
 Sw-Thangnv-lab(config)#
 ```
@@ -194,8 +194,12 @@ Sw-Thangnv-lab(config)#
 ```sh
 Sw-Thangnv-lab#configure terminal
 Enter configuration commands, one per line.  End with CNTL/Z.
-Sw-Thangnv-lab(config)#policy-map POLICY_200M
-Sw-Thangnv-lab(config-pmap)#class limited_200M
+Sw-Thangnv-lab(config)#policy-map limit_input_100MBps
+Sw-Thangnv-lab(config-pmap)#class limit_100MBps
+Sw-Thangnv-lab(config-pmap-c)#police 104857600 1000000 exceed-action drop
+Sw-Thangnv-lab(config-pmap-c)#exit
+Sw-Thangnv-lab(config-pmap)#exit
+Sw-Thangnv-lab(config)#
 ```
 
 ### 3.5 Gán Policy cho cổng mạng muốn hạn chế tốc độ
@@ -203,10 +207,19 @@ Sw-Thangnv-lab(config-pmap)#class limited_200M
 ```sh
 Sw-Thangnv-lab#configure terminal
 Enter configuration commands, one per line.  End with CNTL/Z.
-Sw-Thangnv-lab(config)#interface GigabitEthernet4/0/10
-Sw-Thangnv-lab(config-if)#service-policy input POLICY_200M
+Sw-Thangnv-lab(config)#interface Gi4/0/7
+Sw-Thangnv-lab(config-if)#service-policy input limit_input_100MBps
 Sw-Thangnv-lab(config-if)#exit
-Sw-Thangnv-lab(config)#
+Sw-Thangnv-lab(config)#exit
+Sw-Thangnv-lab#copy running-config startup-config
 
 ```
+#### Kiểm tra
+- trước:
+<h3 align="center"><img src="../../02-Images/3.png"></h3>
 
+- Sau: 
+<h3 align="center"><img src="../../02-Images/4.png"></h3>
+
+# Tài liệu tham khảo
+- https://www.cisco.com/c/en/us/td/docs/switches/lan/catalyst3750/software/release/12-2_35_se/configuration/guide/scg.html
