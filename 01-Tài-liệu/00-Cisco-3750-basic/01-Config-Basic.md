@@ -221,5 +221,23 @@ Sw-Thangnv-lab#copy running-config startup-config
 - Sau: 
 <h3 align="center"><img src="../../02-Images/4.png"></h3>
 
+### 3.7 Cấu hình Limit banwitch output port Switch
+- thực hiện limit banwitch ở tốc độ 200Mb/s
+```sh
+Sw-Thangnv-lab#configure terminal
+Enter configuration commands, one per line.  End with CNTL/Z.
+Sw-Thangnv-lab(config)#interface Gi4/0/9
+Sw-Thangnv-lab(config-if)#srr-queue bandwidth limit 20
+Sw-Thangnv-lab(config-if)#exit
+```
+- trong đó:
+  - `20`: là giá trị % của tốc độ port mạng. Giá trị này chỉ có thể đặt trong khoảng từ 10 đến 90.
+#### Kiểm tra
+- trước:
+<h3 align="center"><img src="../../02-Images/5.png"></h3>
+
+- Sau: 
+<h3 align="center"><img src="../../02-Images/6.png"></h3>
+
 # Tài liệu tham khảo
 - https://www.cisco.com/c/en/us/td/docs/switches/lan/catalyst3750/software/release/12-2_35_se/configuration/guide/scg.html
