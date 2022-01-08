@@ -196,7 +196,7 @@ Sw-Thangnv-lab#configure terminal
 Enter configuration commands, one per line.  End with CNTL/Z.
 Sw-Thangnv-lab(config)#policy-map limit_input_100MBps
 Sw-Thangnv-lab(config-pmap)#class limit_100MBps
-Sw-Thangnv-lab(config-pmap-c)#police 104857600 1000000 exceed-action drop
+Sw-Thangnv-lab(config-pmap-c)#police 100000000 8000 exceed-action drop
 Sw-Thangnv-lab(config-pmap-c)#exit
 Sw-Thangnv-lab(config-pmap)#exit
 Sw-Thangnv-lab(config)#
